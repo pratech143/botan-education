@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Corrected import for react-router-dom
 
 const images = [
+  { name: "United Kingdom", src: "/countries/UK.jpg", text: "Study in UK", description: "The UK offers a prestigious academic experience with globally respected qualifications and a rich cultural environment that prepares students for international success." },
   { name: "Japan", src: "/countries/japan.jpeg", text: "Study in Japan", description: "Studying in Japan allows you to benefit from a prestigious education system, gain exposure to advanced technology and research, and immerse yourself in a vibrant culture that values tradition and innovation." },
-  { name: "USA", src: "/countries/america.webp", text: "Study in America", description: "The USA is a hub for academic excellence and innovation, offering flexible programs and hands-on opportunities that attract students worldwide seeking diverse career paths." },
-  { name: "United Kingdom", src: "/countries/uk.webp", text: "Study in UK", description: "The UK offers a prestigious academic experience with globally respected qualifications and a rich cultural environment that prepares students for international success." },
+  { name: "USA", src: "/countries/america.webp", text: "Study in USA", description: "The USA is a hub for academic excellence and innovation, offering flexible programs and hands-on opportunities that attract students worldwide seeking diverse career paths." },
+  
   { name: "Australia", src: "/countries/australia.jpg", text: "Study in Australia", description: "Australia provides a high-quality education system in a multicultural and welcoming environment, emphasizing practical learning and strong post-study work opportunities." },
   { name: "Newzealand", src: "/countries/newzealand.jpg", text: "Study in New Zealand", description: "New Zealand combines top-tier education with a supportive, adventurous environment, where students can enjoy global-quality learning and career-ready skills." }
 ];
@@ -43,11 +44,11 @@ function ImageSlider() {
       className="w-full h-full object-cover"
     />
     <div className="hidden lg:block absolute inset-0 flex-col items-center justify-center">
-      <div className={`absolute top-1/4 opacity-0 font-semibold uppercase font-poppins outline-none text-7xl w-full text-blue-700 p-4 rounded-lg 
+      <div className={`absolute top-1/4 opacity-0 font-semibold uppercase font-poppins outline-none text-7xl w-full text-orange-600 p-4 rounded-lg 
         ${textAnimation ? 'animate-slide-up-fade-in' : 'opacity-100'}`}>
         {image.text}
       </div>
-      <div className={`absolute top-[40%] left-[30px] opacity-0 font-semibold font-poppins outline-none text-sm text-black p-4 rounded-lg w-1/2
+      <div className={`absolute top-[40%] left-[30px] opacity-0 font-semibold font-poppins outline-none text-sm bg-blue-600 bg-opacity-35 text-black p-4 rounded-lg w-1/2
         ${textAnimation ? 'animate-slide-up-fade-in' : 'opacity-100'}`}>
         {image.description}
       </div>

@@ -54,7 +54,7 @@ function StatisticsSection({ threshold = 0.5 }) {
 
       const yearsInterval = setInterval(() => {
         setYearsCount((prevCount) => {
-          if (prevCount < 2) {
+          if (prevCount < 5) {
             return prevCount + 1;
           } else {
             clearInterval(yearsInterval);

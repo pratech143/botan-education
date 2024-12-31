@@ -3,6 +3,10 @@ import axios from 'axios';
 import logo from "/png100px/logo.png";
 
 function Contactus() {
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    const numberRegex = /^\d{10}$/;
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [number, setNumber] = useState('');
@@ -16,10 +20,24 @@ function Contactus() {
             setTimeout(() => setErrorMessage(""), 5000);
             return; // Stop further execution if validation fails
         }
+        
+        if (!emailRegex.test(email)) {
+            setErrorMessage("Please enter a valid Gmail address ending with @gmail.com.");
+            setTimeout(() => setErrorMessage(""), 5000);
+            return; // Stop further execution if email is invalid
+        }
+        
+        if (!numberRegex.test(number)) {
+            setErrorMessage("Please enter a valid 10-digit phone number.");
+            setTimeout(() => setErrorMessage(""), 5000);
+            return; // Stop further execution if number is invalid
+        }
+        
         axios
-            .get("http://localhost:5000/", {
+            .get(" https://97fc-111-119-49-140.ngrok-free.app", {
                 params: { name, email, number, message },
-            })
+            },setSuccessMessage("Sending..."))
+            
             .then(() => {
                 setSuccessMessage("Application submitted successfully. We will contact you shortly.");
                 setErrorMessage(''); // Clear any previous error message
@@ -73,8 +91,8 @@ function Contactus() {
                                         d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                                     />
                                 </svg>
-                                <div className="ml-4 text-md tracking-wide font-semibold w-40">
-                                    kathmandu, bagbazar (front of pk campus)
+                                <div className="ml- text-md tracking-wide font-semibold w-40">
+                                    Bagbazar,Kathmandu(near P.K campus)
                                 </div>
                             </div>
                             <div className="flex items-center mt-4 text-gray-600 dark:text-gray-300">
@@ -95,7 +113,7 @@ function Contactus() {
                                     />
                                 </svg>
                                 <div className="ml-4 text-md tracking-wide font-semibold w-40">
-                                    +977 9840044318
+                                    +977 01-5924318
                                 </div>
                             </div>
                             <div className="flex items-center mt-2 text-gray-600 dark:text-gray-300">
@@ -199,7 +217,7 @@ function Contactus() {
                 </div>
                 <div className='relative border-2 mt-3 dark:border-gray-700 rounded-md'>
                         <h2 className='mt-4 mb-2 text-gray-700 dark:text-white font-semibold text-3xl'>Our Location</h2>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.378418656724!2d85.31773381016535!3d27.70560012547076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19006ea7f52d%3A0xbd69221585be9049!2sBotan%20Education!5e0!3m2!1sen!2snp!4v1734971757057!5m2!1sen!2snp" width="100%" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.378418656724!2d85.31773381016535!3d27.70560012547076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19006ea7f52d%3A0xbd69221585be9049!2sBotan%20Education!5e0!3m2!1sen!2snp!4v1734971757057!5m2!1sen!2snp" width="100%" height="450" allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
                     </div>
             </div>
         </div>

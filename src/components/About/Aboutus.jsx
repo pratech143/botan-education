@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import CareerCounselling from '../Services/CareerCounselling'
 
 function Aboutus() {
   return (
@@ -40,22 +41,24 @@ function Aboutus() {
               We guide students through the visa application process, ensuring they meet all the necessary requirements for studying abroad. From paperwork to submission, we simplify the process and help students obtain their study visas without hassle.
             </p>
             <div>
-  <h1 className='flex justify-center mt-6 text-black dark:text-white text-3xl font-semibold'>Meet our team members</h1>
-  <div className='flex flex-col md:flex-row md:flex-wrap items-center justify-center mt-8 space-y-8 md:space-y-0 md:space-x-16'>
+  <h1 className='flex justify-center mt-6 mb-3 text-black dark:text-white text-3xl font-semibold'>Meet our Team Members</h1>
+  <div className='flex flex-col md:flex-row md:flex-wrap items-center justify-center space-y-8 md:space-y-0 md:space-x-16'>
     
     <div className='flex flex-col items-center'>
       <div className='bg-blue-600 rounded-full w-36 h-36 flex items-center justify-center'>
-      
+      <img className='rounded-full w-36 h-36 flex items-center justify-center object-cover' src="/owners/ganesh.jpg" alt="ganesh dhakal" />
       </div>
       <p className='mt-4 font-semibold text-lg text-gray-700 dark:text-gray-300'>Ganesh Dhakal</p>
+      <p className='mt-1 font-semibold text-lg text-gray-700 dark:text-gray-300'>Phone No: 9840044318</p>
     </div>
 
 
     <div className='flex flex-col items-center'>
       <div className='bg-blue-600 rounded-full w-36 h-36 flex items-center justify-center'>
-      
+      <img className='rounded-full w-36 h-36 flex items-center justify-center object-cover' src="/owners/deepak.jpg" alt="ganesh dhakal" />
       </div>
       <p className='mt-4 font-semibold text-lg text-gray-700 dark:text-gray-300'>Deepak Bhusal</p>
+      <p className='mt-1 font-semibold text-lg text-gray-700 dark:text-gray-300'>Phone No: 9741811473</p>
     </div>
 
   </div>
@@ -67,16 +70,16 @@ function Aboutus() {
           <h3 className='font-semibold text-3xl'>Our Services</h3>
           <ul className='list-none mt-4'>
             <li className='p-1'>
-              <Link className='hover:text-orange-600 text-gray-600'>Career Counselling</Link>
+              <Link to="/Career Counselling" className='hover:text-orange-600 text-gray-600'>Career Counselling</Link>
             </li>
             <li className='p-1'>
-              <Link className='hover:text-orange-600 text-gray-600'>Language Tuition</Link>
+              <Link to="/Language Tuition" className='hover:text-orange-600 text-gray-600'>Language Tuition</Link>
             </li>
             <li className='p-1'>
-              <Link className='hover:text-orange-600 text-gray-600'>Exam Guidance</Link>
+              <Link to="/Exam Guidance" className='hover:text-orange-600 text-gray-600'>Exam Guidance</Link>
             </li>
             <li className='p-1'>
-              <Link className='hover:text-orange-600 text-gray-600'>Visa Processing</Link>
+              <Link to="/Visa Processing"className='hover:text-orange-600 text-gray-600'>Visa Processing</Link>
             </li>
           </ul>
         </div>

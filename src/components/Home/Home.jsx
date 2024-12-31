@@ -28,7 +28,7 @@ function Home() {
     
       { id: 5,
        image: '/clients/Client5.jpeg',
-       name:'Luna Bhatta', 
+       name:'Karishma Bhandari', 
        description: "Botan Education Consultancy has been a game changer for me. They provided detailed guidance and were available at every step of the process. Their experienced counselors ensured that I got into the perfect university for my goals. If you're looking for professionalism and success, this is the consultancy to choose!"},
   ];
 
