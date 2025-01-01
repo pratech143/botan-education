@@ -1,9 +1,11 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import cors from "cors";
-// import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
-
+// Load environment variables from .env file
+dotenv.config();
+console.log(dotenv.config());
 
 const app = express();
 const port = 5000;
@@ -12,7 +14,10 @@ const port = 5000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// dotenv.config();
+
+// Debugging - Log the values of environment variables to check if they are loaded correctly
+console.log('GMAIL_USER:', process.env.GMAIL_USER);
+console.log('GMAIL_PASSWORD:', process.env.GMAIL_PASSWORD);
 
 // Email sending function
 function sendEmail({ name, email, number, message }) {
@@ -20,26 +25,30 @@ function sendEmail({ name, email, number, message }) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user:'ganeshbotan@gmail.com',
-        pass: 'rctykeoajfgaohrs', // Ensure this is an App Password"
+        user: process.env.GMAIL_USER,   // Use the Gmail user from .env
+        pass: process.env.GMAIL_PASSWORD,  // Use the Gmail app password from .env
+      },
+      tls: {
+        rejectUnauthorized: false,
       },
     });
 
     const mailConfigs = {
-      from:"ganeshbotan@gmail.com",
-      to:"info.botaneducation@gmail.com",
-      subject:"New Contact Request",
-      text:`Name: ${name}\nEmail: ${email}\nPhone Number: ${number}\nMessage: ${message}`,
+      from: process.env.GMAIL_USER,  // Use the sender email from .env
+      to: "info.botaneducation@gmail.com",
+      subject: "New Contact Request",
+      text: `Name: ${name}\nEmail: ${email}\nPhone Number: ${number}\nMessage: ${message}`,
     };
-    console.log(mailConfigs.to)
+
+    console.log(mailConfigs.to);  // Debugging log
+
     transporter.sendMail(mailConfigs, (error, info) => {
       if (error) {
         console.error("Error sending email:", error);
         return reject({ message: `Error: ${error.message}` });
       }
-      console.log("Email sent successfully:", info);
-      
-      resolve({ message: `Email sent successfully:${mailConfigs.to}:${mailConfigs.from}`} );
+      console.log("Email sent successfully:", info.response);  // Log success message
+      resolve({ message: `Email sent successfully: ${mailConfigs.to}: ${mailConfigs.from}` });
     });
   });
 }
