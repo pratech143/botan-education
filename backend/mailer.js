@@ -1,7 +1,8 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import cors from "cors";
-require('dotenv').config();
+// import dotenv from 'dotenv';
+
 
 
 const app = express();
@@ -11,6 +12,7 @@ const port = 5000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// dotenv.config();
 
 // Email sending function
 function sendEmail({ name, email, number, message }) {
@@ -18,16 +20,16 @@ function sendEmail({ name, email, number, message }) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASSWORD, // Ensure this is an App Password"
+        user:'ganeshbotan@gmail.com',
+        pass: 'rctykeoajfgaohrs', // Ensure this is an App Password"
       },
     });
 
     const mailConfigs = {
-      from: "prtkchapagain@gmail.com",
-      to: "info.botaneducation@gmail.com",
-      subject: "New Contact Request",
-      text: `Name: ${name}\nEmail: ${email}\nPhone Number: ${number}\nMessage: ${message}`,
+      from:"ganeshbotan@gmail.com",
+      to:"info.botaneducation@gmail.com",
+      subject:"New Contact Request",
+      text:`Name: ${name}\nEmail: ${email}\nPhone Number: ${number}\nMessage: ${message}`,
     };
     console.log(mailConfigs.to)
     transporter.sendMail(mailConfigs, (error, info) => {
@@ -37,7 +39,7 @@ function sendEmail({ name, email, number, message }) {
       }
       console.log("Email sent successfully:", info);
       
-      resolve({ message: `Email sent successfully:${mailConfigs.to}`} );
+      resolve({ message: `Email sent successfully:${mailConfigs.to}:${mailConfigs.from}`} );
     });
   });
 }

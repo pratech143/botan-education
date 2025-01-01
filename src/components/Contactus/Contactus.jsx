@@ -34,7 +34,7 @@ function Contactus() {
         }
         
         axios
-            .get(" https://97fc-111-119-49-140.ngrok-free.app", {
+            .get("http://localhost:5000", {
                 params: { name, email, number, message },
             },setSuccessMessage("Sending..."))
             
