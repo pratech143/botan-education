@@ -13,61 +13,51 @@ const CardSlider = ({ cards }) => {
     };
 
     return (
-        <>
-
-            <div className="relative w-full max-w-4xl mx-auto py-8">
+        <div className="relative w-full max-w-4xl mx-auto py-8">
+            {/* Card Container */}
+            <div className="relative flex items-center justify-center overflow-hidden">
                 {/* Previous Button */}
-                
-
-                {/* Card Container */}
-                <div className="relative flex items-center justify-center overflow-hidden">
-                    {/* Display only the current card */}
-                    <div
-                        key={cards[currentIndex].id}
-                        className="transition-all duration-500 ease-in-out transform shadow-[0px_4px_6px_rgba(0,0,0,0.1),0px_1px_3px_rgba(0,0,0,0.08)]"
-
-                    >
-                        <div className="card bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-full">
-                            {/* Image */}
-                            <img
-                                src={cards[currentIndex].image}
-                                alt={`Card ${cards[currentIndex].id}`}
-                                className="w-full h-[200px] object-contain rounded-t-lg" // Ensures the full image is visible without cropping
-                            /><button
-                            onClick={handlePrev}
-                            className="absolute left-0 top-1/2 transform -translate-y-1/2 text-black sm:ml-0 dark:text-white p-3 rounded-full z-10 transition ease-in-out"
-                        >
-                            <FaChevronLeft size={30} />
-                        </button>
-                            <div className="p-4 text-center">
-
-                                {/* Card Name */}
-                                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">
-                                    {cards[currentIndex].name}
-                                </h3>
-                                <button
-                    onClick={handleNext}
-                    className="absolute right-0 sm:mr-0 top-1/2 transform -translate-y-1/2 text-black dark:text-white p-3 rounded-full z-10  transition ease-in-out"
+                <button
+                    onClick={handlePrev}
+                    className="absolute left-5 sm:left-10 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 p-4 rounded-full shadow-lg opacity-80 hover:opacity-100 transition ease-in-out z-10"
                 >
-                    <FaChevronRight size={30} />
+                    <FaChevronLeft size={30} />
                 </button>
-                                {/* Card Description */}
-                                <p
-                                    className="text-gray-800 dark:text-gray-200 mt-2 "
-                                    style={{ maxWidth: 'none', minWidth: '350px' }}
-                                >
-                                    {cards[currentIndex].description}
-                                </p>
-                            </div>
+
+                {/* Display only the current card */}
+                <div
+                    key={cards[currentIndex].id}
+                    className="transition-all duration-500 ease-in-out transform shadow-lg hover:shadow-2xl rounded-lg bg-white dark:bg-gray-800 overflow-hidden w-full border-2 border-gray-300 dark:border-gray-700"
+                >
+                    <div className="card">
+                        {/* Image */}
+                        <img
+                            src={cards[currentIndex].image}
+                            alt={`Card ${cards[currentIndex].id}`}
+                            className="w-full h-auto object-contain max-h-[300px] mx-auto rounded-t-lg transition-transform duration-500"
+                        />
+                        <div className="p-6 text-center">
+                            {/* Card Name */}
+                            <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                                {cards[currentIndex].name}
+                            </h3>
+                            {/* Card Description */}
+                            <p className="text-gray-600 dark:text-gray-300 text-base mb-6">
+                                {cards[currentIndex].description}
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 {/* Next Button */}
-                
+                <button
+                    onClick={handleNext}
+                    className="absolute right-5 sm:right-10 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 p-4 rounded-full shadow-lg opacity-80 hover:opacity-100 transition ease-in-out z-10"
+                >
+                    <FaChevronRight size={30} />
+                </button>
             </div>
-
-        </>
+        </div>
     );
 };
 

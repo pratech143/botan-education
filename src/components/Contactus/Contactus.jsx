@@ -34,7 +34,7 @@ function Contactus() {
         }
         
         axios
-            .get("http://localhost:5000", {
+            .post("https://www.botaneducation.com/email-us", {
                 params: { name, email, number, message },
             },setSuccessMessage("Sending..."))
             

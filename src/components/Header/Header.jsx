@@ -12,13 +12,27 @@ function Header() {
 
     const handleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
+        isDestinationsOpen && setIsDestinationsOpen(!isDestinationsOpen);
+        isTestsOpen && setIsTestsOpen(!isTestsOpen);
     };
 
+    const handleTestsFunction = () => {
+        handleTestsToggle();
+        handleMenu();
+    }
+
+    const handleDestinationsFunction = () => {
+        handleDestinationsToggle();
+        handleMenu();
+    }
     const handleDestinationsToggle = () => {
         setIsDestinationsOpen(!isDestinationsOpen);
+        isTestsOpen && setIsTestsOpen(!isTestsOpen);
     };
     const handleTestsToggle = () => {
         setIsTestsOpen(!isTestsOpen);
+        isDestinationsOpen && setIsDestinationsOpen(!isDestinationsOpen);
+        
     };
 
     const destinations = [
@@ -71,6 +85,7 @@ function Header() {
                             <li>
                                 <NavLink
                                     to="/"
+                                    onClick={handleMenu}
                                     className={({ isActive }) =>
                                         `block py-2 pr-4 pl-3 duration-200 dark:border-none border-b ${isActive ? "text-orange-700" : "text-black"} border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 m-0 dark:text-white dark:hover:text-orange-700`
                                     }
@@ -81,6 +96,7 @@ function Header() {
                             <li className="relative ">
                                 <button
                                     onClick={handleTestsToggle}
+                                    
                                     className="flex items-center py-2 pr-4 pl-3 text-black duration-200 hover:text-orange-700 lg:border-0 lg:p-0 dark:text-white dark:hover:text-orange-700 "
                                 >
                                     Tests
@@ -95,7 +111,7 @@ function Header() {
                                                 <li key={index}>
                                                     <NavLink
                                                         to={`/${test.name}`}
-                                                        onClick={handleTestsToggle}
+                                                        onClick={handleTestsFunction}
                                                         className="block  py-2 px-0.5 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
                                                     >
                                                         <div className='flex items-center justify-center'>
@@ -126,7 +142,7 @@ function Header() {
                                                 <li key={index}>
                                                     <NavLink
                                                         to={`/${destination.name}`}
-                                                        onClick={handleDestinationsToggle}
+                                                        onClick={handleDestinationsFunction}
                                                         className="block py-2 px-0.5 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
                                                     >
                                                         <div className='flex items-center'>
@@ -143,6 +159,7 @@ function Header() {
                             <li>
                                 <NavLink
                                     to="/about"
+                                    onClick={handleMenu}
                                     className={({ isActive }) =>
                                         `block py-2 pr-4 pl-3 duration-200 dark:border-none border-b ${isActive ? "text-orange-700" : "text-black"} border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 dark:text-white dark:hover:text-orange-700`
                                     }
@@ -153,6 +170,7 @@ function Header() {
                             <li>
                                 <NavLink
                                     to="/contact"
+                                    onClick={handleMenu}
                                     className={({ isActive }) =>
                                         `block py-2 pr-4 pl-3 duration-200 dark:border-none border-b ${isActive ? "text-orange-700" : "text-black"} border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 dark:hover:text-orange-700 lg:p-0 dark:text-white `
                                     }

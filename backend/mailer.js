@@ -11,7 +11,11 @@ const app = express();
 const port = 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",  // Allow all origins (replace "*" with specific domain for stricter security)
+  methods: ["GET", "POST"],  // Explicitly allow these methods if necessary
+  allowedHeaders: ["Content-Type", "Authorization"]  // Allow these headers
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
