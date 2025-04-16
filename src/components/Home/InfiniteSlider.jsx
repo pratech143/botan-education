@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const InfiniteSlider = ({ slides }) => {
   const sliderRef = useRef(null);
@@ -36,32 +37,72 @@ const InfiniteSlider = ({ slides }) => {
   };
 
   return (
-    <div className="relative w-full  mx-auto py-8">
-      {/* "Our Services" Heading */}
-      <div className="absolute left-4 top-4 text-3xl font-bold pb-6 text-gray-800 dark:text-white z-20">
+    <div className="relative w-full mx-auto py-16">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-400"
+      >
         Our Services
-      </div>
+      </motion.h2>
 
-      {/* Card Container with Horizontal Scroll */}
-      <div className="flex overflow-x-auto space-x-6 py-4 " ref={sliderRef}>
-        {/* Map through slides to display them */}
-        {slides.map((slide) => (
-          <Link to={'/'+ slide.name} key={slide.id} className="w-[300px] bg-white dark:bg-gray-800 cursor-pointer rounded-lg shadow-lg flex-none">
-            <img
-              src={slide.image}
-              alt={`Card ${slide.id}`}
-              className="w-full h-[200px] object-cover rounded-t-lg"
-            />
-            <div className="p-4 text-center">
-              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">
-                {slide.name}
-              </h3>
-              <p className="text-gray-800 dark:text-gray-200 mt-2">
-                {slide.description}
-              </p>
-            </div>
-          </Link>
-        ))}
+      <div className="relative group">
+        <div
+          className="flex overflow-x-auto space-x-6 py-4 scrollbar-hide scroll-smooth"
+          ref={sliderRef}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {slides.map((slide) => (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              key={slide.id}
+              className="w-[300px] flex-none"
+            >
+              <Link
+                to={'/' + slide.name}
+                className="block bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              >
+                <div className="relative h-[200px] overflow-hidden">
+                  <img
+                    src={slide.image}
+                    alt={slide.name}
+                    className="w-full h-full object-cover transform transition-transform duration-300 hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2">
+                    {slide.name}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {slide.description}
+                  </p>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Navigation Buttons */}
+        <button
+          onClick={scrollLeft}
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white dark:hover:bg-gray-700"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          onClick={scrollRight}
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white dark:hover:bg-gray-700"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
     </div>
   );

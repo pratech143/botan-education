@@ -1,38 +1,46 @@
-import React, { useContext, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { DarkModeContext } from '../../contexts/darkModeContext.jsx'; // Import the context
+import React, { useContext, useState, useEffect } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { DarkModeContext } from '../../contexts/darkModeContext.jsx';
+import { motion, AnimatePresence } from 'framer-motion';
 import logo from "/png100px/logo.png";
 
 function Header() {
-    const { darkMode, toggleDarkMode } = useContext(DarkModeContext); // Use global dark mode context
+    const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isDestinationsOpen, setIsDestinationsOpen] = useState(false);
     const [isTestsOpen, setIsTestsOpen] = useState(false);
-    const dropdown = isMenuOpen ? "block" : "hidden";
+    const [isScrolled, setIsScrolled] = useState(false);
+    const location = useLocation();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    useEffect(() => {
+        setIsMenuOpen(false);
+        setIsDestinationsOpen(false);
+        setIsTestsOpen(false);
+    }, [location]);
 
     const handleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
-        isDestinationsOpen && setIsDestinationsOpen(!isDestinationsOpen);
-        isTestsOpen && setIsTestsOpen(!isTestsOpen);
+        setIsDestinationsOpen(false);
+        setIsTestsOpen(false);
     };
 
-    const handleTestsFunction = () => {
-        handleTestsToggle();
-        handleMenu();
-    }
-
-    const handleDestinationsFunction = () => {
-        handleDestinationsToggle();
-        handleMenu();
-    }
-    const handleDestinationsToggle = () => {
-        setIsDestinationsOpen(!isDestinationsOpen);
-        isTestsOpen && setIsTestsOpen(!isTestsOpen);
-    };
     const handleTestsToggle = () => {
         setIsTestsOpen(!isTestsOpen);
-        isDestinationsOpen && setIsDestinationsOpen(!isDestinationsOpen);
-        
+        setIsDestinationsOpen(false);
+    };
+
+    const handleDestinationsToggle = () => {
+        setIsDestinationsOpen(!isDestinationsOpen);
+        setIsTestsOpen(false);
     };
 
     const destinations = [
@@ -47,153 +55,218 @@ function Header() {
         { name: "IELTS" },
         { name: "JLPT" },
         { name: "SAT" },
-
     ];
 
-    return (
-        <header className="shadow fixed w-full z-50 top-0">
-            <nav className={`bg-white ${darkMode ? 'dark:bg-gray-800 text-white' : ''} border-gray-200 px-4 lg:px-6 py-2.5`}>
-                <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-                    <div className='lg:hidden'>
-                        <a onClick={handleMenu} className='text-4xl cursor-pointer inline' href="#">&#8801;</a>
-                    </div>
-                    <Link to="/" className="flex items-center">
-                        <img src={logo} className="mr-3 h-12" alt="Logo" />
-                    </Link>
-                    <div className="flex items-center lg:order-2">
-                        {/* Dark Mode Toggle Button */}
-                        <button
-                            onClick={toggleDarkMode}
-                            className="mr-4 text-2xl cursor-pointer text-black dark:text-white"
-                        >
-                            {darkMode ? '🌙' : '☀️'}
-                        </button>
+    const menuVariants = {
+        closed: { opacity: 0, y: -20 },
+        open: { opacity: 1, y: 0 }
+    };
 
-                        <Link
-                            to="/contact"
-                            className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
-                        >
-                            Get started
+    const dropdownVariants = {
+        closed: { opacity: 0, scale: 0.95 },
+        open: { opacity: 1, scale: 1 }
+    };
+
+    return (
+        <header className={`fixed w-full z-50 top-0 transition-all duration-300 ${isScrolled ? 'shadow-lg backdrop-blur-lg bg-white/90 dark:bg-gray-800/90' : 'bg-white dark:bg-gray-800'
+            }`}>
+            <nav className="px-4 lg:px-6 py-2.5">
+                <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+                    <div className="flex items-center space-x-4">
+                        <button onClick={handleMenu} className="lg:hidden text-gray-600 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white">
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+                            </svg>
+                        </button>
+                        <Link to="/" className="flex items-center">
+                            <motion.img
+                                src={logo}
+                                className="h-12"
+                                alt="Logo"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            />
                         </Link>
                     </div>
 
-                    <div
-                        className={`justify-between ${dropdown} items-center w-full lg:flex lg:w-auto lg:order-1`}
-                        id="mobile-menu-2"
-                    >
-                        <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                            <li>
-                                <NavLink
-                                    to="/"
-                                    onClick={handleMenu}
-                                    className={({ isActive }) =>
-                                        `block py-2 pr-4 pl-3 duration-200 dark:border-none border-b ${isActive ? "text-orange-700" : "text-black"} border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 m-0 dark:text-white dark:hover:text-orange-700`
-                                    }
-                                >
-                                    Home
-                                </NavLink>
-                            </li>
-                            <li className="relative ">
-                                <button
-                                    onClick={handleTestsToggle}
-                                    
-                                    className="flex items-center py-2 pr-4 pl-3 text-black duration-200 hover:text-orange-700 lg:border-0 lg:p-0 dark:text-white dark:hover:text-orange-700 "
-                                >
-                                    Tests
-                                    <span className={`ml-2 transform ${isTestsOpen ? 'rotate-180' : ''}`}>
-                                        &#9662;
-                                    </span>
-                                </button>
-                                {isTestsOpen && (
-                                    <div className="relative  lg:absolute left-0 w-96 bg-white dark:bg-gray-800 shadow-lg pt-4 rounded-md">
-                                        <ul className="grid lg:grid-cols-2">
-                                            {Tests.map((test, index) => (
-                                                <li key={index}>
-                                                    <NavLink
-                                                        to={`/${test.name}`}
-                                                        onClick={handleTestsFunction}
-                                                        className="block  py-2 px-0.5 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
-                                                    >
-                                                        <div className='flex items-center justify-center'>
-                                                            <span className='dark:text-white'>{test.name}</span>
-                                                        </div>
-                                                    </NavLink>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </li>
+                    <div className="flex items-center space-x-4">
+                        <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={toggleDarkMode}
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                        >
+                            {darkMode ? '🌙' : '☀️'}
+                        </motion.button>
 
-                            <li className="relative ">
-                                <button
-                                    onClick={handleDestinationsToggle}
-                                    className="flex items-center py-2 pr-4 pl-3 text-black duration-200 hover:text-orange-700 lg:border-0 lg:p-0 dark:text-white dark:hover:text-orange-700 "
-                                >
-                                    Study Destinations
-                                    <span className={`ml-2 transform ${isDestinationsOpen ? 'rotate-180' : ''}`}>
-                                        &#9662;
-                                    </span>
-                                </button>
-                                {isDestinationsOpen && (
-                                    <div className="relative lg:absolute left-0 w-96 bg-white dark:bg-gray-800 shadow-lg mt-1 rounded-md">
-                                        <ul className="grid lg:grid-cols-2 lg:gap-4 p-2">
-                                            {destinations.map((destination, index) => (
-                                                <li key={index}>
-                                                    <NavLink
-                                                        to={`/${destination.name}`}
-                                                        onClick={handleDestinationsFunction}
-                                                        className="block py-2 px-0.5 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
-                                                    >
-                                                        <div className='flex items-center'>
-                                                            <img className='w-1/4 pl-1' src={destination.src} alt={`${destination.name} flag`} />
-                                                            <span className='dark:text-white'>{destination.name}</span>
-                                                        </div>
-                                                    </NavLink>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </li>
-                            <li>
-                                <NavLink
-                                    to="/about"
-                                    onClick={handleMenu}
-                                    className={({ isActive }) =>
-                                        `block py-2 pr-4 pl-3 duration-200 dark:border-none border-b ${isActive ? "text-orange-700" : "text-black"} border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 dark:text-white dark:hover:text-orange-700`
-                                    }
-                                >
-                                    About
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to="/contact"
-                                    onClick={handleMenu}
-                                    className={({ isActive }) =>
-                                        `block py-2 pr-4 pl-3 duration-200 dark:border-none border-b ${isActive ? "text-orange-700" : "text-black"} border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 dark:hover:text-orange-700 lg:p-0 dark:text-white `
-                                    }
-                                >
-                                    Contact us
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to="https://wa.me/9779840044323"
-                                    className={({ isActive }) =>
-                                        `block py-2 pr-4 pl-3 duration-200 dark:border-none border-b ${isActive ? "text-orange-700" : "text-black"} border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 dark:hover:text-orange-700 lg:p-0 dark:text-white `
-                                    }
-                                >
-                                    <img className='w-8' src="/whatsapp.png" alt="" />
+                        <Link to="/contact">
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="hidden md:inline-flex items-center px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-orange-600 to-orange-500 rounded-full shadow-lg hover:from-orange-500 hover:to-orange-400 transition-all duration-300"
+                            >
+                                Get started
+                                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </motion.button>
+                        </Link>
+                    </div>
 
-                                </NavLink>
-                            </li>
+                    <AnimatePresence>
+                        {isMenuOpen && (
+                            <motion.div
+                                initial="closed"
+                                animate="open"
+                                exit="closed"
+                                variants={menuVariants}
+                                className="w-full lg:flex lg:w-auto lg:order-1"
+                            >
+                                <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                                    <NavLinks
+                                        Tests={Tests}
+                                        destinations={destinations}
+                                        isTestsOpen={isTestsOpen}
+                                        isDestinationsOpen={isDestinationsOpen}
+                                        handleTestsToggle={handleTestsToggle}
+                                        handleDestinationsToggle={handleDestinationsToggle}
+                                        dropdownVariants={dropdownVariants}
+                                    />
+                                </ul>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    <div className="hidden lg:flex lg:items-center lg:w-auto">
+                        <ul className="flex items-center space-x-8 font-medium">
+                            <NavLinks
+                                Tests={Tests}
+                                destinations={destinations}
+                                isTestsOpen={isTestsOpen}
+                                isDestinationsOpen={isDestinationsOpen}
+                                handleTestsToggle={handleTestsToggle}
+                                handleDestinationsToggle={handleDestinationsToggle}
+                                dropdownVariants={dropdownVariants}
+                            />
                         </ul>
                     </div>
                 </div>
             </nav>
         </header>
+    );
+}
+
+function NavLinks({ Tests, destinations, isTestsOpen, isDestinationsOpen, handleTestsToggle, handleDestinationsToggle, dropdownVariants }) {
+    const location = useLocation();
+
+    const linkClasses = ({ isActive }) => `
+        relative px-3 py-2 text-sm font-medium transition-colors duration-200
+        ${isActive
+            ? 'text-orange-600 dark:text-orange-400'
+            : 'text-gray-700 dark:text-gray-200 hover:text-orange-600 dark:hover:text-orange-400'}
+    `;
+
+    const dropdownButtonClasses = `
+        flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 
+        hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-200
+    `;
+
+    return (
+        <>
+            <li>
+                <NavLink to="/" className={linkClasses}>Home</NavLink>
+            </li>
+
+            <li className="relative">
+                <button onClick={handleTestsToggle} className={dropdownButtonClasses}>
+                    Tests
+                    <svg className={`w-4 h-4 ml-1 transition-transform duration-200 ${isTestsOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <AnimatePresence>
+                    {isTestsOpen && (
+                        <motion.div
+                            initial="closed"
+                            animate="open"
+                            exit="closed"
+                            variants={dropdownVariants}
+                            className="mt-2 w-full lg:w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden 
+                                   lg:absolute lg:left-0"
+                        >
+
+                            {Tests.map((test) => (
+                                <NavLink
+                                    key={test.name}
+                                    to={`/${test.name}`}
+                                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-gray-700"
+                                >
+                                    {test.name}
+                                </NavLink>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </li>
+
+            <li className="relative">
+                <button onClick={handleDestinationsToggle} className={dropdownButtonClasses}>
+                    Study Destinations
+                    <svg className={`w-4 h-4 ml-1 transition-transform duration-200 ${isDestinationsOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <AnimatePresence>
+                    {isDestinationsOpen && (
+                        <motion.div
+                            initial="closed"
+                            animate="open"
+                            exit="closed"
+                            variants={dropdownVariants}
+                            className="absolute left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden"
+                        >
+                            {destinations.map((destination) => (
+                                <NavLink
+                                    key={destination.name}
+                                    to={`/${destination.name}`}
+                                    className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-gray-700"
+                                >
+                                    <img className="w-6 h-6 mr-3" src={destination.src} alt={`${destination.name} flag`} />
+                                    {destination.name}
+                                </NavLink>
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </li>
+
+            <li>
+                <NavLink to="/about" className={linkClasses}>About</NavLink>
+            </li>
+
+            <li>
+                <NavLink to="/contact" className={linkClasses}>Contact us</NavLink>
+            </li>
+
+            <li>
+                <a
+                    href="https://wa.me/9779840044323"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                >
+                    <motion.img
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="w-8 h-8"
+                        src="/whatsapp.png"
+                        alt="WhatsApp"
+                    />
+                </a>
+            </li>
+        </>
     );
 }
 
